@@ -41,17 +41,20 @@ module.exports = {
 
   async update(req, res) {
     try {
-      const { github_username: github_param } = req.params;
-      const { github_username: github_body } = req.body;
+      const { github_username } = req.params;
       
-      if (github_body) {
-        throw new Error('O GitHub não pode ser alterado.');
+      if (req.body.github_username || req.body._id) {
+        throw new Error('Você enviou informações que não podem ser alteradas.');
       }
 
-      const update = await Dev.updateOne({ github_param }, req.body);
+      let techs = req.body.techs;
+
+      if (techs) req.body.techs = parseStringAsArray(techs);
+
+      const update = await Dev.updateOne({ github_username }, req.body);
 
       if (update.nModified === 0) {
-        throw new Error('Dev não encontrado.');
+        throw new Error('Não foi possível atualizar as informações.');
       }
 
       return res.send();
