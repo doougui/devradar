@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const routes = require('./routes');
 
@@ -12,6 +13,7 @@ mongoose.connect(`mongodb+srv://doougui:${process.env.DATABASE_PASS}@cluster0-i7
   useCreateIndex: true,
 });
 
+app.use(cors());
 app.use(express.json());
 app.use(routes);
 
