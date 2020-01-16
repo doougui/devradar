@@ -37,3 +37,15 @@ li.dev-item a {
 li.dev-item a:hover {
   color: #5A2EA6;
 }
+
+.user-info strong {
+  display: block;
+  font-size: 16px;
+  color: #333;
+}
+
+.user-info span {
+  font-size: 13px;
+  color: #999;
+  margin-top: 2px;
+}

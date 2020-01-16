@@ -18,15 +18,3 @@ main ul {
     width: 100%;
   }
 }
-
-.user-info strong {
-  display: block;
-  font-size: 16px;
-  color: #333;
-}
-
-.user-info span {
-  font-size: 13px;
-  color: #999;
-  margin-top: 2px;
-}
