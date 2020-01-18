@@ -13,6 +13,12 @@ aside strong {
   color: #333;
 }
 
+aside small {
+  display: block;
+  text-align: center;
+  color: #E74C3C;
+}
+
 aside form {
   margin-top: 30px;
 }

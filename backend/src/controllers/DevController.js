@@ -42,9 +42,11 @@ module.exports = {
       );
 
       sendMessage(sendSocketMessageTo, 'new-dev', dev);
+
+      return res.json(dev);
     }
-  
-    return res.json(dev);
+
+    return res.json({ error: 'Este dev já está cadastrado' });
   },
 
   async update(req, res) {

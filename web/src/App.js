@@ -11,6 +11,7 @@ import DevForm from './components/DevForm';
 
 function App() {
   const [devs, setDevs] = useState([]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     async function loadDevs() {
@@ -25,6 +26,10 @@ function App() {
   async function handleAddDev(data) {
     const response = await api.post('/devs', data);
 
+    if (response.data.error) {
+      return setError(response.data.error);
+    }
+
     setDevs([...devs, response.data]);
   }
 
@@ -32,6 +37,7 @@ function App() {
     <div id="app">
       <aside>
         <strong>Cadastrar</strong>
+        {error ? <small>{error}</small> : ''}
         <DevForm onSubmit={handleAddDev} />
       </aside>
       <main>
