@@ -11,6 +11,28 @@ function Main({ navigation }) {
   const [devs, setDevs] = useState([]);
   const [currentRegion, setCurrentRegion] = useState(null);
   const [techs, setTechs] = useState('');
+  const [bottomHeight, setBottomHeight] = useState(20);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      e => {
+        setBottomHeight(e.endCoordinates.height + 20); 
+      }
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setBottomHeight(20); 
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
   useEffect(() => {
     async function loadInitialPosition() {
@@ -49,7 +71,7 @@ function Main({ navigation }) {
       longitude,
       techs
     );
-  }
+  };
 
   async function loadDevs() {
     const { latitude, longitude } = currentRegion;
@@ -106,7 +128,7 @@ function Main({ navigation }) {
           </Marker>
         ))}
       </MapView>
-      <View style={styles.searchForm}>
+      <View style={[styles.searchForm, { bottom: bottomHeight }]}>
         <TextInput 
           style={styles.searchInput}
           placeholder="Buscar devs por techs"
@@ -158,7 +180,6 @@ const styles = StyleSheet.create({
 
   searchForm: {
     position: 'absolute',
-    bottom: 20, // Modificar para bottom e fazer o input ir para cima quando o keyboard aparecer
     left: 20,
     right: 20,
     zIndex: 5,
