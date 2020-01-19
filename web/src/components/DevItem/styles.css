@@ -28,14 +28,50 @@ li.dev-item p {
   margin: 10px 0;
 }
 
-li.dev-item a {
-  color: #8E4DFF;
+li.dev-item .buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+li.dev-item a, 
+li.dev-item button {
   font-size: 14px;
+  line-height: 26px;
   text-decoration: none;
 }
 
-li.dev-item a:hover {
+li.dev-item button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+li.dev-item a.github {
+  color: #8E4DFF;
+}
+
+li.dev-item a.github:hover {
   color: #5A2EA6;
+}
+
+li.dev-item .actions button + button {
+  margin-left: 10px;
+}
+
+li.dev-item .actions button.edit {
+  color: #3498db;
+}
+
+li.dev-item .actions button.edit:hover {
+  color: #2980b9;
+}
+
+li.dev-item .actions button.delete {
+  color: #E74C3C;
+}
+
+li.dev-item .actions button.delete:hover {
+  color: #C0392B;
 }
 
 .user-info strong {

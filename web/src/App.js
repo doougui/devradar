@@ -22,15 +22,27 @@ function App() {
 
     loadDevs();
   }, [])
-
-  async function handleAddDev(data) {
-    const response = await api.post('/devs', data);
-
+  
+  function updateDevList(response) {
     if (response.data.error) {
       return setError(response.data.error);
     }
 
     setDevs([...devs, response.data]);
+  }
+
+  async function handleAddDev(data) {
+    const response = await api.post('/devs', data);
+
+    updateDevList(response);
+  }
+
+  async function handleDeleteDev(github_username) {
+    await api.delete(`/devs/${github_username}`);
+    
+    const newDevs = devs.filter(dev => dev.github_username !== github_username);
+
+    setDevs(newDevs);
   }
 
   return (
@@ -43,7 +55,11 @@ function App() {
       <main>
         <ul>
           {devs.map(dev => (
-            <DevItem key={dev._id} dev={dev} />
+            <DevItem 
+              key={dev._id} 
+              dev={dev} 
+              deleteAction={handleDeleteDev}
+            />
           ))}
         </ul>
       </main>

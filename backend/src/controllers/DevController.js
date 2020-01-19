@@ -43,49 +43,57 @@ module.exports = {
 
       sendMessage(sendSocketMessageTo, 'new-dev', dev);
 
-      return res.json(dev);
+      return res
+        .status(201)
+        .json(dev);
     }
 
-    return res.json({ error: 'Este dev já está cadastrado' });
+    return res
+      .status(400)
+      .json({ error: 'Este dev já está cadastrado' });
   },
 
   async update(req, res) {
-    try {
-      const { github_username } = req.params;
-      
-      if (req.body.github_username || req.body._id) {
-        throw new Error('Você enviou informações que não podem ser alteradas.');
-      }
+    const { github_username } = req.params;
 
-      let techs = req.body.techs;
-
-      if (techs) req.body.techs = parseStringAsArray(techs);
-
-      const update = await Dev.updateOne({ github_username }, req.body);
-
-      if (update.nModified === 0) {
-        throw new Error('Não foi possível atualizar as informações.');
-      }
-
-      return res.send();
-    } catch (err) {
-      return res.status(400).send({ error: `${err}` });
+    if (req.body.github_username || req.body._id) {
+      return res
+        .status(400)
+        .json({ error: 'Dados que não podem ser alterados foram enviados.' });
     }
+
+    let techs = req.body.techs;
+
+    if (techs) req.body.techs = parseStringAsArray(techs);
+
+    const dev = await Dev.findOneAndUpdate(
+      { github_username }, 
+      req.body, 
+      { new: true },
+    );
+
+    if (!dev || dev.nModified === 0) {
+      return res
+        .status(400)
+        .json({ error: 'Não foi possível editar este dev!' });
+    }
+
+    return res
+      .status(201)
+      .json(dev);
   },
 
   async destroy(req, res) {
-    try {
-      const { github_username } = req.params;
-  
-      const destroy = await Dev.deleteOne({ github_username });
+    const { github_username } = req.params;
 
-      if (destroy.deletedCount === 0) {
-        throw new Error('Dev não encontrado.');
-      }
+    const destroy = await Dev.deleteOne({ github_username });
 
-      return res.send();
-    } catch (err) {
-      return res.status(400).send({ error: `${err}` });
+    if (destroy.deletedCount === 0) {
+      return res
+        .status(400)
+        .json({ error: 'Não foi possível deletar este dev!' });
     }
+
+    return res.send();
   }
 };

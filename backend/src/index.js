@@ -17,6 +17,7 @@ mongoose.connect(`mongodb+srv://doougui:${process.env.DATABASE_PASS}@cluster0-i7
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
+  useFindAndModify: false,
 });
 
 app.use(cors());
