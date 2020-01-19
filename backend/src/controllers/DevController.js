@@ -49,8 +49,8 @@ module.exports = {
     }
 
     return res
-      .status(400)
-      .json({ error: 'Este dev já está cadastrado' });
+      .status(409)
+      .json({ message: 'Este dev já está cadastrado.' });
   },
 
   async update(req, res) {
@@ -59,7 +59,7 @@ module.exports = {
     if (req.body.github_username || req.body._id) {
       return res
         .status(400)
-        .json({ error: 'Dados que não podem ser alterados foram enviados.' });
+        .json({ message: 'Dados que não podem ser alterados foram enviados.' });
     }
 
     let techs = req.body.techs;
@@ -75,11 +75,11 @@ module.exports = {
     if (!dev || dev.nModified === 0) {
       return res
         .status(400)
-        .json({ error: 'Não foi possível editar este dev!' });
+        .json({ message: 'Não foi possível editar este dev.' });
     }
 
     return res
-      .status(201)
+      .status(200)
       .json(dev);
   },
 
@@ -91,7 +91,7 @@ module.exports = {
     if (destroy.deletedCount === 0) {
       return res
         .status(400)
-        .json({ error: 'Não foi possível deletar este dev!' });
+        .json({ message: 'Não foi possível deletar este dev.' });
     }
 
     return res.send();
