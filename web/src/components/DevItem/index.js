@@ -2,9 +2,13 @@ import React from 'react';
 
 import './styles.css';
 
-function DevItem({ dev, deleteAction }) {
+function DevItem({ dev, deleteAction, editAction }) {
   async function handleDeleteClick() {
     await deleteAction(dev.github_username);
+  }
+
+  function handleEditClick() {
+    editAction(dev);
   }
 
   return (
@@ -22,8 +26,8 @@ function DevItem({ dev, deleteAction }) {
         <a className="github" href={`https://github.com/${dev.github_username}`}>Acessar perfil no GitHub</a>
 
         <div className="actions">
-          <button className="edit">Editar</button>
-          <button onClick={handleDeleteClick} className="delete">Excluir</button>
+          <button className="edit" onClick={handleEditClick}>Editar</button>
+          <button className="delete" onClick={handleDeleteClick}>Excluir</button>
         </div>
       </div>
     </li>

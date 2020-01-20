@@ -10,10 +10,12 @@ import './Sidebar.css';
 import './Main.css';
 
 import DevItem from './components/DevItem';
-import DevForm from './components/DevForm';
+import DevFormCreate from './components/DevForm/DevFormCreate';
+import DevFormUpdate from './components/DevForm/DevFormUpdate';
 
 function App() {
   const [devs, setDevs] = useState([]);
+  const [devBeingEdited, setDevBeingEdited] = useState({});
 
   useEffect(() => {
     async function loadDevs() {
@@ -30,7 +32,7 @@ function App() {
 
     if (availableTypes.includes(type)) {
       return toast[type](message);
-    } else if (type === 'default') {
+    } else {
       return toast(message, options);
     }
   }
@@ -55,6 +57,31 @@ function App() {
     }
   }
 
+  function showEditForm(data) {
+    setDevBeingEdited(data);
+  }
+
+  function hideEditForm() {
+    setDevBeingEdited({});
+  } 
+  
+  async function handleEditDev(github_username, data) {
+    try {
+      const response = await api.put(`/devs/${github_username}`, data);
+
+      const newDevs = [...devs];
+      const updatedDevIndex = newDevs.findIndex(dev => dev.github_username === github_username);
+
+      newDevs.splice(updatedDevIndex, 1, response.data);
+
+      setDevs(newDevs);
+
+      setDevBeingEdited({});
+    } catch (error) {
+      handleApiError(error);
+    }
+  }
+
   async function handleDeleteDev(github_username) {
     try {
       await api.delete(`/devs/${github_username}`);
@@ -69,8 +96,21 @@ function App() {
   return (
     <div id="app">
       <aside>
-        <strong>Cadastrar</strong>
-        <DevForm onSubmit={handleAddDev} />
+        {Object.entries(devBeingEdited).length === 0 ? (
+          <>
+            <strong>Cadastrar</strong>
+            <DevFormCreate onSubmit={handleAddDev} />
+          </>
+        ) : (
+          <>
+            <strong>Editando {devBeingEdited.github_username}</strong>
+            <DevFormUpdate 
+              onSubmit={handleEditDev} 
+              dev={devBeingEdited} 
+              onCancelEdition={hideEditForm} 
+            />
+          </>
+        )}
       </aside>
       <main>
         <ToastContainer />
@@ -80,6 +120,7 @@ function App() {
               key={dev._id} 
               dev={dev} 
               deleteAction={handleDeleteDev}
+              editAction={showEditForm}
             />
           ))}
         </ul>

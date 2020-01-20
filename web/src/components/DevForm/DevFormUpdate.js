@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from 'react';
 
-function DevForm({ onSubmit }) {
-  const [github_username, setGithubUsername] = useState('');
-  const [techs, setTechs] = useState('');
-  const [latitude, setLatitude] = useState('');
-  const [longitude, setLongitude] = useState('');
+function DevFormUpdate({ onSubmit, onCancelEdition, dev }) {
+  const [githubUsername, setGithubUsername] = useState(dev.github_username);
+  const [name, setName] = useState(dev.name);
+  const [techs, setTechs] = useState(dev.techs.join(', '));
+  const [bio, setBio] = useState(dev.bio);
+  const [latitude, setLatitude] = useState(dev.location.coordinates[1]);
+  const [longitude, setLongitude] = useState(dev.location.coordinates[0]);
+
+  useEffect(() => {
+    setGithubUsername(dev.github_username);
+    setName(dev.name);
+    setTechs(dev.techs.join(', '));
+    setBio(dev.bio);
+    setLatitude(dev.location.coordinates[1]);
+    setLongitude(dev.location.coordinates[0]);
+  }, [dev]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -26,27 +37,40 @@ function DevForm({ onSubmit }) {
   async function handleSubmit(e) {
     e.preventDefault();
     
-    await onSubmit({
-      github_username,
+    await onSubmit(githubUsername, {
+      name,
+      bio,
       techs,
       latitude,
       longitude,
     });
+  }
 
-    setGithubUsername('');
-    setTechs('');
+  function handleCancelClick() {
+    onCancelEdition();
   }
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="input-block">
-        <label htmlFor="github_username">Usuário do GitHub</label>
+        <label htmlFor="name">Nome</label>
         <input 
-          name="github_username" 
-          id="username" 
+          name="name" 
+          id="name" 
           required 
-          value={github_username}
-          onChange={e => setGithubUsername(e.target.value)}
+          value={name}
+          onChange={e => setName(e.target.value)}
+        />
+      </div>
+
+      <div className="input-block">
+        <label htmlFor="bio">Bio</label>
+        <input
+          name="bio" 
+          id="bio" 
+          required 
+          value={bio}
+          onChange={e => setBio(e.target.value)}
         />
       </div>
 
@@ -87,9 +111,10 @@ function DevForm({ onSubmit }) {
         </div>
       </div>
 
-      <button type="submit">Salvar</button>       
+      <button type="submit">Salvar</button>
+      <button onClick={handleCancelClick} className="cancelEdition" href="#">Cancelar</button>
     </form> 
   );
 }
 
-export default DevForm;
+export default DevFormUpdate;

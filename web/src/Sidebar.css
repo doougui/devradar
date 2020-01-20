@@ -71,3 +71,17 @@ aside form button[type=submit] {
 aside form button[type=submit]:hover {
   background: #6931CA;
 }
+
+aside form .cancelEdition {
+  font-size: 14px;
+  color: #E74C3C;
+  display: block;
+  background: none;
+  border: 0;
+  margin: 10px auto 0 auto;
+  cursor: pointer;
+}
+
+aside form .cancelEdition:hover {
+  color: #C0392B;
+}

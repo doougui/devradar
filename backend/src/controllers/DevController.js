@@ -55,20 +55,27 @@ module.exports = {
 
   async update(req, res) {
     const { github_username } = req.params;
+  
+    let { name, bio, techs, latitude, longitude } = req.body;
 
-    if (req.body.github_username || req.body._id) {
-      return res
-        .status(400)
-        .json({ message: 'Dados que não podem ser alterados foram enviados.' });
-    }
+    if (techs) techs = parseStringAsArray(techs);
+    
+    const location = {
+      type: 'Point',
+      coordinates: [longitude, latitude],
+    };
 
-    let techs = req.body.techs;
+    const newValues = { name, bio, techs, location };
+    console.log(newValues);
+    if (!Object.values(newValues).forEach(value => {
+      if (!value.length) {
 
-    if (techs) req.body.techs = parseStringAsArray(techs);
-
+      }
+    }));
+    
     const dev = await Dev.findOneAndUpdate(
       { github_username }, 
-      req.body, 
+      newValues,
       { new: true },
     );
 
