@@ -10,6 +10,7 @@ import './Sidebar.css';
 import './Main.css';
 
 import DevItem from './components/DevItem';
+import DevItemShimmer from './components/DevItemShimmer';
 import DevFormCreate from './components/DevFormCreate';
 import DevFormUpdate from './components/DevFormUpdate';
 
@@ -114,14 +115,27 @@ function App() {
       <main>
         <ToastContainer />
         <ul>
-          {devs.map(dev => (
-            <DevItem 
-              key={dev._id} 
-              dev={dev} 
-              deleteAction={handleDeleteDev}
-              editAction={showEditForm}
-            />
-          ))}
+          {!devs.length ? (
+            <>
+              <DevItemShimmer />
+              <DevItemShimmer />
+              <DevItemShimmer />
+              <DevItemShimmer />
+              <DevItemShimmer />
+              <DevItemShimmer />
+              <DevItemShimmer />
+              <DevItemShimmer />
+            </>
+          ) : (
+            devs.map(dev => (
+              <DevItem 
+                key={dev._id} 
+                dev={dev} 
+                deleteAction={handleDeleteDev}
+                editAction={showEditForm}
+              />
+            ))
+          )}
         </ul>
       </main>
     </div>
