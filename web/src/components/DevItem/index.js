@@ -26,8 +26,8 @@ function DevItem({ dev, deleteAction, editAction }) {
         <a className="github" href={`https://github.com/${dev.github_username}`}>Acessar perfil no GitHub</a>
 
         <div className="actions">
-          <button className="edit" onClick={handleEditClick}>Editar</button>
-          <button className="delete" onClick={handleDeleteClick}>Excluir</button>
+          <button type="button" className="edit" onClick={handleEditClick}>Editar</button>
+          <button type="button" className="delete" onClick={handleDeleteClick}>Excluir</button>
         </div>
       </div>
     </li>

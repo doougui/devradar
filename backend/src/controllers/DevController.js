@@ -45,7 +45,7 @@ module.exports = {
 
       return res
         .status(201)
-        .json(dev);
+        .json({ dev, message: 'Dev cadastrado com sucesso.' });
     }
 
     return res
@@ -59,19 +59,27 @@ module.exports = {
     let { name, bio, techs, latitude, longitude } = req.body;
 
     if (techs) techs = parseStringAsArray(techs);
-    
+
+    if (isNaN(parseFloat(latitude)) || isNaN(parseFloat(longitude))) {
+      return res
+        .status(400)
+        .json({ message: 'Informe uma localização válida.' });
+    }
+
     const location = {
       type: 'Point',
       coordinates: [longitude, latitude],
     };
 
     const newValues = { name, bio, techs, location };
-    console.log(newValues);
-    if (!Object.values(newValues).forEach(value => {
-      if (!value.length) {
 
+    for (value of Object.values(newValues)) {
+      if (!value.coordinates && !value.length) {
+        return res
+          .status(400)
+          .json({ message: 'Preencha todos os campos para continuar.' });
       }
-    }));
+    }
     
     const dev = await Dev.findOneAndUpdate(
       { github_username }, 
@@ -87,7 +95,7 @@ module.exports = {
 
     return res
       .status(200)
-      .json(dev);
+      .json({ dev, message: 'Dev editado com sucesso.' });
   },
 
   async destroy(req, res) {
@@ -101,6 +109,6 @@ module.exports = {
         .json({ message: 'Não foi possível deletar este dev.' });
     }
 
-    return res.send();
+    return res.json({ message: 'Dev excluido com sucesso.' });
   }
 };

@@ -10,8 +10,8 @@ import './Sidebar.css';
 import './Main.css';
 
 import DevItem from './components/DevItem';
-import DevFormCreate from './components/DevForm/DevFormCreate';
-import DevFormUpdate from './components/DevForm/DevFormUpdate';
+import DevFormCreate from './components/DevFormCreate';
+import DevFormUpdate from './components/DevFormUpdate';
 
 function App() {
   const [devs, setDevs] = useState([]);
@@ -31,7 +31,7 @@ function App() {
     const availableTypes = ['error', 'success', 'info', 'warn'];
 
     if (availableTypes.includes(type)) {
-      return toast[type](message);
+      return toast[type](message, options);
     } else {
       return toast(message, options);
     }
@@ -51,7 +51,9 @@ function App() {
     try {
       const response = await api.post('/devs', data);
 
-      setDevs([...devs, response.data]);
+      setDevs([...devs, response.data.dev]);
+
+      callToast(response.data.message, 'success');
     } catch (error) {
       handleApiError(error);
     }
@@ -72,11 +74,12 @@ function App() {
       const newDevs = [...devs];
       const updatedDevIndex = newDevs.findIndex(dev => dev.github_username === github_username);
 
-      newDevs.splice(updatedDevIndex, 1, response.data);
+      newDevs.splice(updatedDevIndex, 1, response.data.dev);
 
       setDevs(newDevs);
-
       setDevBeingEdited({});
+
+      callToast(response.data.message, 'success');
     } catch (error) {
       handleApiError(error);
     }
@@ -84,10 +87,12 @@ function App() {
 
   async function handleDeleteDev(github_username) {
     try {
-      await api.delete(`/devs/${github_username}`);
+      const response = await api.delete(`/devs/${github_username}`);
       const newDevs = devs.filter(dev => dev.github_username !== github_username);
   
       setDevs(newDevs);
+
+      callToast(response.data.message, 'success');
     } catch (error) {
       handleApiError(error);
     }
@@ -97,19 +102,13 @@ function App() {
     <div id="app">
       <aside>
         {Object.entries(devBeingEdited).length === 0 ? (
-          <>
-            <strong>Cadastrar</strong>
             <DevFormCreate onSubmit={handleAddDev} />
-          </>
         ) : (
-          <>
-            <strong>Editando {devBeingEdited.github_username}</strong>
-            <DevFormUpdate 
-              onSubmit={handleEditDev} 
-              dev={devBeingEdited} 
-              onCancelEdition={hideEditForm} 
-            />
-          </>
+          <DevFormUpdate 
+            onSubmit={handleEditDev} 
+            dev={devBeingEdited} 
+            onCancelEdition={hideEditForm} 
+          />
         )}
       </aside>
       <main>
