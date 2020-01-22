@@ -4,7 +4,7 @@
 </h1>
 
 <h3 align="center">
-  Projeto desenvolvido no evento especial "Semana Omnistack", realizado pela Rocketseat, e aprimorado por mim.
+  Projeto desenvolvido no evento especial "Semana Omnistack", realizado pela Rocketseat.
 </h3> 
 
 ## :rocket: Instalação
@@ -25,7 +25,7 @@ yarn
 
 As instruções dadas neste arquivo serão todas feitas com o `yarn`, portanto, é recomendado que você use o mesmo.
 
-## :on: Inicialização do projeto 
+## :on: Inicialização do projeto (ambiente de desenvolvimento)
 
 Dentro da pasta `backend`, dentro do Terminal/CMD, digite o seguinte comando:
 
