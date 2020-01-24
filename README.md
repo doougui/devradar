@@ -53,7 +53,7 @@ Semana OmniStack:
   - Aula 5 - Funcionalidades avançadas :heavy_check_mark:
 
 Extras:
-  - Retorno de código de status de acordo com o retorno da API (back-end) :heavy_check_mark:
+  - Retorno de código de status e mensagem de acordo com o retorno da API (back-end) :heavy_check_mark:
   - Funcionalidade de editar e excluir dev (back-end) :heavy_check_mark:
   - Funcionalidade de editar e excluir dev (web) :heavy_check_mark:
   - React-Toastify para a exibição de mensagens de erro e de sucesso (web) :heavy_check_mark:
