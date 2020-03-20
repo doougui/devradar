@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 function DevFormCreate({ onSubmit }) {
+  const [buttonText, setButtonText] = useState('Salvar');
   const [github_username, setGithubUsername] = useState('');
   const [techs, setTechs] = useState('');
   const [latitude, setLatitude] = useState('');
@@ -25,6 +26,8 @@ function DevFormCreate({ onSubmit }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    setButtonText('Carregando...');
     
     await onSubmit({
       github_username,
@@ -33,6 +36,7 @@ function DevFormCreate({ onSubmit }) {
       longitude,
     });
 
+    setButtonText('Salvar');
     setGithubUsername('');
     setTechs('');
   }
@@ -89,7 +93,7 @@ function DevFormCreate({ onSubmit }) {
           </div>
         </div>
 
-        <button type="submit">Salvar</button>       
+        <button type="submit">{buttonText}</button>       
       </form> 
     </>
   );

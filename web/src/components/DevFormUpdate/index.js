@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
 
 function DevFormUpdate({ onSubmit, onCancelEdition, dev }) {
+  const [buttonText, setButtonText] = useState('Salvar');
+  const componentIsMounted = React.useRef(true);
   const [githubUsername, setGithubUsername] = useState(dev.github_username);
   const [name, setName] = useState(dev.name);
   const [techs, setTechs] = useState(dev.techs.join(', '));
   const [bio, setBio] = useState(dev.bio);
   const [latitude, setLatitude] = useState(dev.location.coordinates[1]);
   const [longitude, setLongitude] = useState(dev.location.coordinates[0]);
+
+  useEffect(() => {
+    return () => {
+      componentIsMounted.current = false
+    }
+  }, []);
 
   useEffect(() => {
     setGithubUsername(dev.github_username);
@@ -19,6 +27,8 @@ function DevFormUpdate({ onSubmit, onCancelEdition, dev }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    setButtonText('Carregando...');
     
     await onSubmit(githubUsername, {
       name,
@@ -27,6 +37,10 @@ function DevFormUpdate({ onSubmit, onCancelEdition, dev }) {
       latitude,
       longitude,
     });
+
+    if (componentIsMounted.current) {
+      setButtonText('Salvar');
+    }
   }
 
   function handleCancelClick() {
@@ -96,7 +110,7 @@ function DevFormUpdate({ onSubmit, onCancelEdition, dev }) {
           </div>
         </div>
 
-        <button type="submit">Salvar</button>
+        <button type="submit">{buttonText}</button>
         <button type="button" onClick={handleCancelClick} className="cancelEdition">Cancelar</button>
       </form> 
     </>

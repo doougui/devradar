@@ -11,7 +11,7 @@
 
 :bulb: Para instalar os pacotes, você precisará ter o [NPM](https://www.npmjs.com/) ou o [Yarn](https://yarnpkg.com/lang/en/) instalado em sua máquina.
 
-Para instalar as dependências do projeto, acesse a raiz do projeto utilizando o Terminal/CMD e digite o seguinte comando:
+Para instalar as dependências do projeto, acesse cada pasta localizada na raiz do projeto (`backend`, `web` e `mobile`) utilizando o Terminal/CMD e digite o seguinte comando:
 
 NPM: 
 ```
@@ -59,8 +59,7 @@ Extras:
   - React-Toastify para a exibição de mensagens de erro e de sucesso (web) :heavy_check_mark:
   - Shimmer effect para que o carregamento de devs ocorra de forma visualmente mais agradável (web) :heavy_check_mark:
   - InputText subir ou descer de acordo com o estado do teclado (show/hide) (mobile) :heavy_check_mark:
-  - Websockets nos outros métodos também, não somente no create (back-end/mobile) :x:
-  - Carregamento no botão quando a requisição estiver acontecendo (web) :x:
+  - Carregamento no botão quando a requisição estiver acontecendo (web) :heavy_check_mark:
 
 ## :mailbox_with_mail: Licença
 
